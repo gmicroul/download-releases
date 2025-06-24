@@ -40,7 +40,7 @@ jobs:
 
       - name: Upload image to Release
         uses: ncipollo/release-action@main
-        if: steps.compile.outputs.status == 'success' && !cancelled()
+        if: steps.download.outputs.status == 'success' && !cancelled()
         with:
           tag: mpv_aarch64_${{ env.COMPILE_STARTINGTIME }}
           artifacts: /home/pintcat/ubin/*

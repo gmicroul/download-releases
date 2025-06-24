@@ -35,7 +35,7 @@ jobs:
       - name: Upload file
         uses: actions/upload-artifact@v4
         with:
-          name: fedora-aarch64
+          name: fedora-oneplus6t
           path: /home/pintcat/ubin/*
 
       - name: Upload image to Release

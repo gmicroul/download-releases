@@ -1,5 +1,5 @@
 
-name: Build mpv static
+name: To download release file
 on:
   repository_dispatch:
   workflow_dispatch:

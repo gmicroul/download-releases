@@ -42,9 +42,9 @@ jobs:
         uses: ncipollo/release-action@main
         if: steps.download.outputs.status == 'success' && !cancelled()
         with:
-          tag: mpv_aarch64_${{ env.COMPILE_STARTINGTIME }}
+          tag: fedora_oneplus6t_${{ env.COMPILE_STARTINGTIME }}
           artifacts: /home/pintcat/ubin/*
           allowUpdates: true
           token: ${{ secrets.GITHUB_TOKEN }}
           body: |
-            This is mpv static ${{ env.LINUX_GITURL }}
+            This is fedora-oneplus6t-image ${{ env.LINUX_GITURL }}

@@ -23,7 +23,7 @@ jobs:
 
       - name: Create Release
         id: create_release
-        uses: actions/create-release@v4
+        uses: actions/create-release@v2
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
         with:
@@ -37,7 +37,7 @@ jobs:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
         with:
           upload_url: ${{ steps.create_release.outputs.upload_url }}
-          asset_path: ./package.zip
-          asset_name: mirrored_package.zip
+          asset_path: ./Fedora-SDM845-Remix.tar.xz
+          asset_name: Fedora-SDM845-Remix.tar.xz
 
 

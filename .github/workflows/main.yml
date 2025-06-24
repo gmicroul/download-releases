@@ -2,7 +2,14 @@
 name: Mirror Release Assets
 
 on:
+  repository_dispatch:
   workflow_dispatch:
+    inputs:
+      set_git_repo:
+        description: "aarch64"
+        required: true
+        default: "mpv"
+
 
 
 jobs:

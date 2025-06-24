@@ -1,0 +1,33 @@
+
+name: Mirror Release Assets
+
+on:
+  workflow_dispatch:
+
+
+jobs:
+  mirror:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Download target asset
+        run: |
+          curl -LO "https://github.com/ORIGINAL_OWNER/ORIGINAL_REPO/releases/download/v1.0.0/package.zip"
+
+      - name: Create Release
+        id: create_release
+        uses: actions/create-release@v1
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        with:
+          tag_name: mirrored-v1.0.0
+          release_name: "Mirrored Release v1.0.0"
+          body: "Automatically mirrored from ORIGINAL_OWNER/ORIGINAL_REPO"
+
+      - name: Upload Asset
+        uses: actions/upload-release-asset@v1
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        with:
+          upload_url: ${{ steps.create_release.outputs.upload_url }}
+          asset_path: ./package.zip
+          asset_name: mirrored_package.zip

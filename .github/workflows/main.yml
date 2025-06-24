@@ -14,37 +14,30 @@ env:
   TZ: Asia/Shanghai
 
 jobs:
-  build:
-    runs-on: ubuntu-24.04-arm
-    if: github.event.repository.owner.id == github.event.sender.id
-
+  mirror:
+    runs-on: ubuntu-latest
     steps:
-      - name: Checkout
-        uses: actions/checkout@v2
-        
-      - name: Download-releases
-        id: download
+      - name: Download target asset
         run: |
           curl -LO "https://github.com/fedora-remix-mobility/fedora-kiwi-descriptions/releases/download/2025-04-04/Fedora-SDM845-Remix.tar.xz"
-          pwd
-          ls -ltrh
-          
-          echo "::set-output name=status::success"
-          
 
-      - name: Upload file
-        uses: actions/upload-artifact@v4
+      - name: Create Release
+        id: create_release
+        uses: actions/create-release@v1
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
         with:
-          name: fedora-oneplus6t
-          path: /home/pintcat/ubin/*
+          tag_name: mirrored-v1.0.0
+          release_name: "Mirrored Release v1.0.0"
+          body: "Automatically mirrored from ORIGINAL_OWNER/ORIGINAL_REPO"
 
-      - name: Upload image to Release
-        uses: ncipollo/release-action@main
-        if: steps.download.outputs.status == 'success' && !cancelled()
+      - name: Upload Asset
+        uses: actions/upload-release-asset@v1
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
         with:
-          tag: fedora_oneplus6t_${{ env.COMPILE_STARTINGTIME }}
-          artifacts: /home/pintcat/ubin/*
-          allowUpdates: true
-          token: ${{ secrets.GITHUB_TOKEN }}
-          body: |
-            This is fedora-oneplus6t-image ${{ env.LINUX_GITURL }}
+          upload_url: ${{ steps.create_release.outputs.upload_url }}
+          asset_path: ./package.zip
+          asset_name: mirrored_package.zip
+
+

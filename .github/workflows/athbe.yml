@@ -1,5 +1,5 @@
 
-name: To download release file
+name: To download athbe file
 on:
   repository_dispatch:
   workflow_dispatch:

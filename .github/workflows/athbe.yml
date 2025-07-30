@@ -1,0 +1,41 @@
+
+name: To download release file
+on:
+  repository_dispatch:
+  workflow_dispatch:
+    inputs:
+      set_git_repo:
+        description: "aarch64"
+        required: true
+        default: "to change fedora images url"
+
+
+env:
+  TZ: Asia/Shanghai
+
+jobs:
+  mirror:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Download target asset
+        run: |
+          curl -LO "https://cloud.athbe.cn/f/2MTG/check.sh"
+
+      - name: Create Release
+        id: create_release
+        uses: actions/create-release@v2
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        with:
+          tag_name: mirrored-v1.0.0
+          release_name: "Mirrored Release v1.0.0"
+          body: "Automatically mirrored from ORIGINAL_OWNER/ORIGINAL_REPO"
+
+      - name: Upload Asset
+        uses: actions/upload-release-asset@v4
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        with:
+          upload_url: ${{ steps.create_release.outputs.upload_url }}
+          asset_path: ./check.sh
+          asset_name: check.sh
